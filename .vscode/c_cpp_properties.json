@@ -7,6 +7,7 @@
                 "${workspaceFolder}/host/include",
                 "${workspaceFolder}/lib/include",
                 "${workspaceFolder}/pos/include",
+                "${workspaceFolder}/engine/include",
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

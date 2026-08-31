@@ -10,3 +10,6 @@ include $(REPO_ROOT)/scripts/Makefile.gcc
 include $(REPO_ROOT)/scripts/Makefile.ld
 
 all: $(TARGETS)
+
+clean:
+	rm -f $(TARGETS) $(COMMON_OBJS)

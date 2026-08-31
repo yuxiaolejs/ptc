@@ -9,12 +9,12 @@ PICFLAGS += -O -Wall -std=gnu99 -Wno-unused-variable # -Werror
 PICFLAGS += -nostdlib -nostartfiles -ffreestanding 
 PICFLAGS += -mcpu=arm1176jzf-s
 PICFLAGS += -mno-unaligned-access
-PICFLAGS += -I$(LIB_I)
+PICFLAGS += $(LIB_I)
 # end borrowed from staff code
 
 CFLAGS ?=
 CFLAGS += -O -Wall -std=gnu99
-CFLAGS += -I$(LIB_I)
+CFLAGS += $(LIB_I)
 
 %.host.o: %.c
 	@printf "\033[32mCompiling %s...\033[0m\n" "$(abspath $@)"
