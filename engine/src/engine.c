@@ -41,3 +41,71 @@ int deserialize_show_engine(show_engine_t *engine, uint8_t *buffer, size_t buffe
     printf("Deserialized show engine: %u bytes\n", offset_bytes);
     return offset_bytes;
 }
+
+void engine_update_cmdline_display(show_engine_t *engine)
+{
+    // run the parsing logic for viz
+    char *input = engine->cmdline_buffer;
+    char *display = engine->cmdline_display;
+    char *tips = engine->cmdline_tips;
+    engine->cmdline_tips[0] = '?';
+    engine->cmdline_tips[1] = '\0';
+    while (*input)
+    {
+        switch (*input)
+        {
+        case 'q':
+            sprintf(display, "Cue ");
+            display += strlen(display);
+            break;
+        case 'g':
+            sprintf(display, "Go To Cue ");
+            display += strlen(display);
+            break;
+        case 'u':
+            sprintf(display, "Update ");
+            display += strlen(display);
+            break;
+        case 'r':
+            sprintf(display, "Record ");
+            display += strlen(display);
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '0':
+        case '9':
+            sprintf(display, "%c", *input);
+            display += strlen(display);
+            break;
+        }
+        input++;
+    }
+}
+
+void engine_cmdline_key(show_engine_t *engine, int keycode, int is_shifted)
+{
+    printf("engine_cmdline_key: keycode=%d, is_shifted=%d\n", keycode, is_shifted);
+    if (keycode == 13)
+    {
+        // Enter = submit command
+        printf("Command submitted: %s\n", engine->cmdline_buffer);
+        printf("Parsed command submitted: %s\n", engine->cmdline_display);
+        engine->cmdline_buffer[0] = '\0';
+        engine->cmdline_display[0] = '\0';
+        engine->cmdline_tips[0] = '\0';
+    }
+    else
+    {
+        char c = (char)keycode;
+        uint32_t idx = strlen(engine->cmdline_buffer);
+        engine->cmdline_buffer[idx] = c;
+        engine->cmdline_buffer[idx + 1] = '\0';
+    }
+    engine_update_cmdline_display(engine);
+}
