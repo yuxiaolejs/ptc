@@ -30,8 +30,8 @@ typedef struct device
 
 typedef struct device_node
 {
-    struct list_head list; // Linked list node
     device_t device;       // Device data
+    struct list_head list; // Linked list node
 } device_node_t;
 
 typedef struct device_list
@@ -39,4 +39,9 @@ typedef struct device_list
     struct list_head head; // Head of the linked list
 } device_list_t;
 
+int serialize_device(device_t *device, uint8_t *buffer, size_t buffer_size);
+int serialize_device_list(device_list_t *device_list, uint8_t *buffer, size_t buffer_size);
+
+int deserialize_device(device_t *device, uint8_t *buffer, size_t buffer_size);
+int deserialize_device_list(device_list_t *device_list, uint8_t *buffer, size_t buffer_size);
 #endif
