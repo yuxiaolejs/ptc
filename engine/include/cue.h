@@ -4,6 +4,7 @@
 #include "device.h"
 typedef struct transition
 {
+    uint32_t device_id;
     uint32_t dmx_property;
     uint32_t dmx_value;
 } transition_t;
