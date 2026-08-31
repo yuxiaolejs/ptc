@@ -1,0 +1,25 @@
+PICC := arm-none-eabi-gcc
+CC := gcc
+
+LIB_I := $(shell find $(REPO_ROOT)  -type d -name include -printf '-I%p ')
+
+# Borrowed from staff code
+PICFLAGS ?=
+PICFLAGS += -O -Wall -std=gnu99 -Wno-unused-variable # -Werror
+PICFLAGS += -nostdlib -nostartfiles -ffreestanding 
+PICFLAGS += -mcpu=arm1176jzf-s
+PICFLAGS += -mno-unaligned-access
+PICFLAGS += -I$(LIB_I)
+# end borrowed from staff code
+
+CFLAGS ?=
+CFLAGS += -O -Wall -std=gnu99
+CFLAGS += -I$(LIB_I)
+
+%.host.o: %.c
+	@printf "\033[32mCompiling %s...\033[0m\n" "$(abspath $@)"
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.pi.o: %.c
+	@printf "\033[32mCompiling %s...\033[0m\n" "$(abspath $@)"
+	$(PICC) $(PICFLAGS) -c $< -o $@

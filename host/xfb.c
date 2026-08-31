@@ -21,6 +21,9 @@
 static void app_render(uint32_t *fb, int w, int h, int pitch_px, uint64_t frame);
 static void app_key(unsigned long keysym, int down);
 
+uint32_t *gui_fb;
+int pitch_px;
+
 int main(void)
 {
     Display *dpy = XOpenDisplay(NULL);
@@ -85,8 +88,9 @@ int main(void)
            img->bits_per_pixel, img->bytes_per_line,
            img->red_mask, img->green_mask, img->blue_mask);
 
-    uint32_t *fb = (uint32_t *)img->data;   // <-- hand this to your program
-    int pitch_px = img->bytes_per_line / 4; // may exceed HOST_FB_W; don't assume
+    uint32_t *fb = (uint32_t *)img->data; // <-- hand this to your program
+    gui_fb = fb;
+    pitch_px = img->bytes_per_line / 4; // may exceed HOST_FB_W; don't assume
 
     uint64_t frame = 0;
     int running = 1;
@@ -133,11 +137,11 @@ int main(void)
     return 0;
 }
 
-void render_put_pixel(uint32_t *fb, int pitch_px, int x, int y, uint32_t color)
+void render_put_pixel(int x, int y, uint32_t color)
 {
     for (int dy = y * HOST_FB_SCALE; dy < (y + 1) * HOST_FB_SCALE; dy++)
         for (int dx = x * HOST_FB_SCALE; dx < (x + 1) * HOST_FB_SCALE; dx++)
-            fb[dy * pitch_px + dx] = color;
+            gui_fb[dy * pitch_px + dx] = color;
 }
 
 // ---- demo stubs: replace with your ported code ----
@@ -146,7 +150,8 @@ static void app_render(uint32_t *fb, int w, int h, int pitch_px, uint64_t frame)
     printf("frame %lu, width=%d height=%d pitch=%d\n", frame, w, h, pitch_px);
     for (int y = 0; y < h; y++)
         for (int x = 0; x < w; x++)
-            render_put_pixel(fb, pitch_px, x , y , ((x + frame) & 0xff) << 16 | (y & 0xff) << 8 | 0x40);
+            render_put_pixel(x, y, ((x + frame) & 0xff) << 16 | (y & 0xff) << 8 | 0x40);
+    gui_draw_char('A', 10, 10, 0x00ff00);
 }
 
 static void app_key(unsigned long keysym, int down)
