@@ -6,7 +6,7 @@ COMMON_PIOBJS ?=
 COMMON_OBJS ?=
 
 # Borrowed from staff code
-%.bin: %.host.o $(COMMON_PIOBJS) $(MEMMAP)
+%.bin: %.pi.o $(COMMON_PIOBJS) $(MEMMAP)
 	@printf "\033[32mLinking %s...\033[0m\n" "$(abspath $@)"
 	@printf "\033[32mCommon OBJs %s...\033[0m\n" "$(COMMON_PIOBJS)"
 	# $* is the shared name: for target 1-blink.bin, $* == 1-blink

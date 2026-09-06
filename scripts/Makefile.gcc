@@ -18,8 +18,12 @@ CFLAGS += $(LIB_I)
 
 %.host.o: %.c
 	@printf "\033[32mCompiling %s...\033[0m\n" "$(abspath $@)"
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -DPLATFORM=2 -c $< -o $@
 
 %.pi.o: %.c
 	@printf "\033[32mCompiling %s...\033[0m\n" "$(abspath $@)"
-	$(PICC) $(PICFLAGS) -c $< -o $@
+	$(PICC) $(PICFLAGS) -DPLATFORM=1 -c $< -o $@
+
+%.pi.o: %.S
+	@printf "\033[32mCompiling %s...\033[0m\n" "$(abspath $@)"
+	$(PICC) $(PICFLAGS) -DPLATFORM=1 -c $< -o $@
