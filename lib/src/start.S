@@ -1,0 +1,26 @@
+@ this location is linked at 0x8000 using the trivial linker 
+@ script <memmap>
+@
+@ this address is defined in the rpi <config.txt> file as
+@ the start location (you can change it) that you 
+@ copied onto the SD card.
+@ 
+@ if you look at blink.list (which is a disassembled version of
+@ blink.bin) you can verify that this is true.
+@
+@ trivial trampoline to start the "C environment" --- in our case,
+@ just loading an address of physical memory into the stack pointer
+@ register and jumping to <notmain>.
+.section .text._start
+.globl _start
+_start:
+    mov sp, #0x8000000 
+    bl notmain
+
+inf_loop: 
+    b inf_loop
+
+@ do nothing: put the call here so the compiler cannot optimize.
+.globl nop
+nop:
+    bx lr
