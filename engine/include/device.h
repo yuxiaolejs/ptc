@@ -1,6 +1,6 @@
 #ifndef DEVICE_H
 #define DEVICE_H
-#include <stdint.h>
+#include "libshim.h"
 #include "linkedlist.h"
 typedef enum
 {
