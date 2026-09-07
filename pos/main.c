@@ -68,6 +68,7 @@ void notmain(void)
     {
         delay_us(10000);
         // engine render loop
+        engine_tick(main_engine);
         dmx_fb_write_offset = dmx_render_frame(main_engine->dmx_val);
     }
 }

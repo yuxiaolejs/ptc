@@ -14,7 +14,7 @@ PIOBJS := $(SRCC:.c=.pi.o)
 PIOBJS += $(SRCS:.S=.pi.o)
 
 
-all: $(OBJS) $(PIOBJS)
+all: $(PIOBJS)
 
 clean:
 	rm -f $(OBJS) $(PIOBJS)

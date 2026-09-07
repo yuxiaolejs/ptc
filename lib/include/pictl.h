@@ -16,6 +16,7 @@ void delay_cycles(uint32_t cycles);
 uint32_t timer_get_usec_raw(void);
 uint32_t timer_get_usec(void);
 uint32_t timer_get_msec(void);
+uint64_t timer_get_full_usec(void);
 
 static inline void udelay(uint32_t n)
 {

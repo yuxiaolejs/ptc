@@ -53,7 +53,9 @@ void delay_ms(uint32_t ms)
 void delay_us(uint32_t us)
 {
     uint32_t end_time = timer_get_usec_raw() + us;
-    while (timer_get_usec_raw() < end_time){}
+    while (timer_get_usec_raw() < end_time)
+    {
+    }
 }
 
 void delay_cycles(uint32_t cycles)
@@ -79,6 +81,13 @@ uint32_t timer_get_msec(void)
     uint64_t usec = (uint64_t)timer_get_usec_raw();
     usec |= ((uint64_t)GET32(0x20003008)) << 32; // high 32 bits
     return (uint32_t)(usec >> 10);               // divide by 1024
+}
+
+uint64_t timer_get_full_usec(void)
+{
+    uint64_t usec = (uint64_t)timer_get_usec_raw();
+    usec |= ((uint64_t)GET32(0x20003008)) << 32; // high 32 bits
+    return usec;
 }
 
 uint32_t read_cpsr(void)
