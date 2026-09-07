@@ -11,6 +11,7 @@
 
 void rpi_reboot(void);
 void delay_ms(uint32_t ms);
+void delay_us(uint32_t us);
 void delay_cycles(uint32_t cycles);
 uint32_t timer_get_usec_raw(void);
 uint32_t timer_get_usec(void);
