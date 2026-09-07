@@ -40,7 +40,6 @@ uint32_t dmx_render_frame(uint8_t *frame)
         write_fb_bit(1);
         write_fb_bit(1);
     }
-    printk("DMX frame rendered, %u bits\n", dmx_fb_write_offset);
     while (dmx_fb_write_offset < sizeof(dmx_frame_buffer) * 8 - 16)
         write_fb_bit(1);
 

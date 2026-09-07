@@ -6,6 +6,7 @@
 #include "pictl.h"
 #include "pcm.h"
 #include "dmx.h"
+#include "engine.h"
 
 static void dmx_build_frame(uint8_t *frame)
 {
@@ -37,10 +38,14 @@ static void dmx_build_frame(uint8_t *frame)
         frame[i] = 0;
 }
 
+show_engine_t *main_engine;
+
 void notmain(void)
 {
     uint32_t frames = 0;
     uint8_t dmx_frame[DMX_SLOTS];
+
+    kalloc_init();
 
     dmx_gpio_init();
     pcm_clock_init();
@@ -48,18 +53,22 @@ void notmain(void)
     printk("READY TO BUILD DMX FRAME\n");
     dmx_build_frame(dmx_frame);
     uint32_t dmx_bits = dmx_render_frame(dmx_frame);
-    printk("DMX frame padded to %u bits\n", dmx_bits);
 
     uint32_t bytes = dmx_bits / 8;
     uint32_t words = bytes / 4;
 
     pcm_dma_start(dmx_frame_buffer, bytes);
 
+    // engine init
+    main_engine = (show_engine_t *)malloc(sizeof(show_engine_t));
+    memset(main_engine, 0, sizeof(show_engine_t));
+    init_show_engine(main_engine);
+
     while (1)
     {
         delay_us(10000);
-        dmx_build_frame(dmx_frame);
-        dmx_fb_write_offset = dmx_render_frame(dmx_frame);
+        // engine render loop
+        dmx_fb_write_offset = dmx_render_frame(main_engine->dmx_val);
     }
 }
 
